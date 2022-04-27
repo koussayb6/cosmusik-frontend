@@ -13,6 +13,9 @@ import {Provider} from "react-redux";
 import {store} from "./app/store";
 import {App} from "./App";
 import {ToastContainer} from "react-toastify";
+import EmailVerify from "./pages/EmailVerify";
+import {ToastProvider} from "react-toast-notifications";
+import Otp from "./pages/Otp";
 
 function Root () {
         return (
@@ -21,21 +24,23 @@ function Root () {
 
                 <Routes>
                     <Route exact path='/login' element={<Login/> } />
+                    <Route exact path='/otp' element={<Otp/> } />
                     <Route exact path='/register' element={<Register /> }/>
+                    <Route exact path={`${process.env.PUBLIC_URL}/verify/:code`} element={<EmailVerify /> }/>
                     <Route exact path='*' element={<App />} />
 
 
                 </Routes>
 
-
             </Router>
-    <ToastContainer />
+
             </>
 )
 
 }
 
 ReactDOM.render(<Provider store={store}>
-    <Root />
+    <ToastProvider >
+        <Root /></ToastProvider>
 </Provider>, document.getElementById('root'));
 serviceWorker.register();
