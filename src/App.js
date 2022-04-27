@@ -48,7 +48,6 @@ export function App() {
 <>
         <Header />
     <Leftnav />
-    <Rightchat />
                 <Routes>
 
                     <Route exact path='/' element={<Home />} />
