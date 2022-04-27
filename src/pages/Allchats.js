@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Messenger from "../components/messenger/Messenger";
+import HeaderT from "../components/HeaderT";
 import Conversation from "../components/conversations/Conversation";
 import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,15 +15,7 @@ function Allchats() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showChats, setShowChats] = useState(true);
-
-  const socket = useRef(io("ws://localhost:8900"));
-
-  useEffect(() => {
-    socket.current.emit("addUser", "622840e4585911cedea3f49c");
-
-    return () => {};
-  }, []);
-
+  //const [socket, setSocket] = useState(null);
   //el authorisation ya ahmed mta koussay
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -37,7 +30,6 @@ function Allchats() {
   const getUsers = async () => {
     const { data } = await API.get("/api/users/");
     setUsers(data);
-    console.log(data);
   };
 
   //geting all the chats of the user
@@ -92,7 +84,7 @@ function Allchats() {
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                   >
-                    Launch demo modal
+                    New Group Chat
                   </button>
 
                   <input
@@ -162,7 +154,11 @@ function Allchats() {
           </div>
         </nav>
       </div>
-      <GroupChatModel />
+      <GroupChatModel
+        setConversations={setConversations}
+        conversations={conversations}
+      />
+      <HeaderT></HeaderT>
     </>
   );
 }

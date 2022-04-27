@@ -12,6 +12,7 @@ import { store } from "./app/store";
 import { App } from "./App";
 import { ToastContainer } from "react-toastify";
 import Allchats from "./pages/Allchats";
+import Groups from "./pages/Groups";
 
 function Root() {
   return (
@@ -21,6 +22,8 @@ function Root() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/chat" element={<Allchats />} />
+          <Route exact path="/groups" element={<Groups />} />
+
           <Route exact path="*" element={<App />} />
         </Routes>
       </Router>

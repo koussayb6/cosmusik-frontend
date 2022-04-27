@@ -39,6 +39,7 @@ import Userpage from "./pages/Userpage";
 import Authorpage from "./pages/Authorpage";
 import Comingsoon from "./pages/Comingsoon";
 import Hotelsingle from "./pages/Hotelsingle";
+import Allchats from "./pages/Allchats";
 
 export function App() {
   return (
@@ -76,7 +77,7 @@ export function App() {
         <Route exact path="/singleproduct" element={<Singleproduct />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/checkout" element={<Checkout />} />
-        <Route exact path="/defaultmessage" element={<Chat />} />
+        <Route exact path="/chat" element={<Allchats />} />
         <Route exact path="/defaultlive" element={<Live />} />
 
         <Route exact path="/defaultjob" element={<Job />} />
