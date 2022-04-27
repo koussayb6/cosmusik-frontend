@@ -1,7 +1,5 @@
 import "./messenger.css";
-import { format } from "timeago.js";
 import Message from "../../components/message/Message";
-import Conversation from "../../components/conversations/Conversation";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,7 +78,7 @@ export default function Messenger({ currentChat }) {
       const { data } = await API.post("/api/message/", message);
 
       socket.current.emit("join chat", currentChat._id);
-      const receiverId = currentChat.users.find((u) => u._id !== user._id);
+      //const receiverId = currentChat.users.find((u) => u._id !== user._id);
       socket.current.emit("new message", data);
       setMessages([...messages, data]);
       setNewMessage("");
