@@ -14,28 +14,9 @@ import Onesection from "../components/Onesection";
 import {forEach} from "react-bootstrap/ElementChildren";
 
 
-const slideList = [
-    {
-        imageUrl: 'product.png',
-        name: 'product-image ',
-    },
-    {
-        imageUrl: 'product.png',
-        name: 'product-image ',
-    },
-    {
-        imageUrl: 'product.png',
-        name: 'product-image ',
-    },
-    {
-        imageUrl: 'product.png',
-        name: 'product-image ',
-    },
-
-]
 
 
-function Singleproduct () {
+function SingleCourse () {
     //const [videoCors,setVideoCors] = useState();
     let {id} = useParams();
     const navigate = useNavigate()
@@ -151,8 +132,8 @@ function Singleproduct () {
                                         <div className="desc-course">
                                             <h4 className="main-title">Curriculum</h4>
                                             <div className="question-collaps">
-                                                <div className="videocourses" id="accordion">
-                                                    <Onesection section={[]} />
+                                                <div id="accordion" className="card">
+
                                                 </div>
                                                 <div className="card">
                                                     <div className="card-header" id="headingOne">
@@ -496,10 +477,10 @@ function Singleproduct () {
                                                 </ul>
                                                 <form method="post" className="c-form">
                                                     <input type="text" placeholder="Name"/>
-                                                        <input type="text" placeholder="Email"/>
-                                                            <textarea rows="4" placeholder="Write Something"></textarea>
-                                                            <button className="main-btn" type="submit">Add Review
-                                                            </button>
+                                                    <input type="text" placeholder="Email"/>
+                                                    <textarea rows="4" placeholder="Write Something"></textarea>
+                                                    <button className="main-btn" type="submit">Add Review
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div>
@@ -516,4 +497,4 @@ function Singleproduct () {
     );
 }
 
-export default Singleproduct;
+export default SingleCourse;

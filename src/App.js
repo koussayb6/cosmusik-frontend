@@ -39,6 +39,7 @@ import Userpage from "./pages/Userpage";
 import Authorpage from "./pages/Authorpage";
 import Comingsoon from "./pages/Comingsoon";
 import Hotelsingle from "./pages/Hotelsingle";
+import SingleCourse from "./pages/SingleCourse";
 
 export function App() {
 
@@ -79,6 +80,7 @@ export function App() {
                     <Route exact path='/shop2' element={<ShopTwo />} />
                     <Route exact path='/shop3' element={<ShopThree />} />
                     <Route exact path='/singleproduct' element={<Singleproduct />} />
+                    <Route exact path='/singleCourse/:id' element={<SingleCourse />} />
                     <Route exact path='/cart' element={<Cart />} />
                     <Route exact path='/checkout' element={<Checkout />} />
                     <Route exact path='/defaultmessage' element={<Chat />} />
