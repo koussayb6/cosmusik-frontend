@@ -5,7 +5,7 @@ const initialState = {
   videocourses: [],
   isError: false,
   isSuccess: false,
-  isLoading: false,
+  isLoading: true,
   message: '',
 }
 
@@ -25,6 +25,25 @@ export const createvideocourse = createAsyncThunk(
             error.toString()
         return thunkAPI.rejectWithValue(message)
       }
+    }
+)
+
+// Create new review
+export const createReview = createAsyncThunk(
+    'videocourses/createReview',
+    async (review, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await videocourseService.addReview(review, token)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
     }
 )
 
@@ -144,6 +163,19 @@ export const videocourseSlice = createSlice({
           state.isLoading = false
           state.isError = true
           state.message = action.payload
+        })
+        .addCase(createReview.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(createReview.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.videocourses.reviews.push(action.payload)
+        })
+        .addCase(createReview.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
         })
   },
 })

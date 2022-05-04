@@ -1,4 +1,4 @@
-import React, {Component, Fragment, useEffect, useState} from "react";
+import React, {Component, Fragment, useEffect, useRef, useState} from "react";
 import Header from '../components/Header';
 import Leftnav from '../components/Leftnav';
 import Rightchat from '../components/Rightchat';
@@ -8,10 +8,14 @@ import Popupchat from '../components/Popupchat';
 import Slider from "react-slick";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getonevideocourse, getvideocourses, reset} from "../features/videocourse/videocourseSlice";
+import {createReview, getonevideocourse, getvideocourses, reset} from "../features/videocourse/videocourseSlice";
 import Onevideocourse from "../components/Onevideocourse";
 import Onesection from "../components/Onesection";
 import {forEach} from "react-bootstrap/ElementChildren";
+import Spinner from "../components/Spinner";
+import {format} from "timeago.js";
+import Rating from "react-rating";
+import axios from "axios";
 
 
 
@@ -21,12 +25,22 @@ function SingleCourse () {
     let {id} = useParams();
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
+    const [review, setReview]= useState({message:'', rating:0, id:''})
     const { videocourses, isLoading, isError, message, isSuccess } = useSelector(
         (state) => state.videocourses
     )
-    //const [videocourses, setVideocourses] = useState({})
-    //const { user } = useSelector((state) => state.auth)
+    const scroll= useRef()
+
+    const { user } = useSelector((state) => state.auth)
+
+
+     function onSubmit(e){
+        e.preventDefault()
+        const data= {review: review, id:videocourses._id}
+        dispatch(createReview(data));
+        setReview({...review, rating:0})
+
+    }
     useEffect(() => {
         if (isError) {
             console.log(message)
@@ -34,15 +48,17 @@ function SingleCourse () {
 
 
         dispatch(getonevideocourse(id))
-        console.log(videocourses)
         return () => {
             dispatch(reset())
         }
     }, [navigate, isError, message, dispatch])
-    const sections = [];
-    sections.push(videocourses.sections)
-    console.log(videocourses.sections)
 
+    const rate=(value)=>{
+         setReview({...review, rating: value})
+    }
+    useEffect(()=>{
+        scroll.current?.scrollIntoView({behavior: "smooth"})
+    },[videocourses.reviews])
     const hotelsettings = {
         arrows: true,
         dots: true,
@@ -53,6 +69,14 @@ function SingleCourse () {
         variableWidth: false,
 
     };
+    if(isLoading){
+        return (<Spinner/>)
+    }else{
+        let rating= 0;
+        videocourses.reviews.map((rev)=>{
+            rating+=rev.rating;
+        })
+
     return (
         <Fragment>
             <Header />
@@ -72,8 +96,9 @@ function SingleCourse () {
                                                 <li><i className="icofont-star"></i></li>
                                                 <li><i className="icofont-star"></i></li>
                                                 <li><i className="icofont-star"></i></li>
-                                                <li><span>4.5</span></li>
+                                                <li><span>{Math.round((rating/videocourses.reviews.length)*10)/10}</span></li>
                                             </ul>
+
                                             <h4>{videocourses.title}</h4>
                                             <span className="course-price">${videocourses.price}<del>29.99</del></span>
                                             <p>
@@ -135,50 +160,50 @@ function SingleCourse () {
                                                 <div id="accordion" className="card">
 
                                                 </div>
-                                                <div className="card">
-                                                    <div className="card-header" id="headingOne">
-                                                        <h5 className="mb-0">
-                                                            <button className="btn btn-link collapsed"
-                                                                    data-toggle="collapse"
-                                                                    data-target="#collapseOne"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="collapseOne">
-                                                                1- Basic Html
-                                                                Introduction <span>03 videos</span>
-                                                            </button>
-                                                        </h5>
-                                                    </div>
-
-                                                    <div id="collapseOne" className="collapse"
-                                                         aria-labelledby="headingOne"
-                                                         data-parent="#accordion" >
-                                                        <div className="card-body">
-                                                            <ul className="video-lecture">
-                                                                <li>
-                                                                    <i className="icofont-play-alt-1"></i>
-                                                                    <a className="play-btn" data-fancybox=""
-                                                                       href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
-                                                                        Intro Lecture</a>
-                                                                    <span>29min</span>
-                                                                </li>
-                                                                <li>
-                                                                    <i className="icofont-play-alt-1"></i>
-                                                                    <a className="play-btn" data-fancybox=""
-                                                                       href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
-                                                                        Basic Lecture</a>
-                                                                    <span>45min</span>
-                                                                </li>
-                                                                <li>
-                                                                    <i className="icofont-lock"></i>
-                                                                    <a className="play-btn" data-fancybox=""
-                                                                       href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
-                                                                        Tags Lecture</a>
-                                                                    <span>20min</span>
-                                                                </li>
-                                                            </ul>
+                                                {videocourses.sections.map((section)=>{
+                                                    return(<div className="card">
+                                                        <div className="card-header" id="headingOne">
+                                                            <h5 className="mb-0">
+                                                                <button className="btn btn-link collapsed"
+                                                                        data-toggle="collapse"
+                                                                        data-target="#collapseOne"
+                                                                        aria-expanded="false"
+                                                                        aria-controls="collapseOne">
+                                                                    {section.title} <span>{section.videos.length} videos</span>
+                                                                </button>
+                                                            </h5>
                                                         </div>
-                                                    </div>
-                                                </div>
+
+                                                        <div id="collapseOne" className="collapse show"
+                                                             aria-labelledby="headingOne"
+                                                             data-parent="#accordion" >
+                                                            <div className="card-body">
+                                                                <ul className="video-lecture">
+                                                                    {section.videos.map((video)=>{
+                                                                        return (<li>
+                                                                            <i className="icofont-play-alt-1"></i>
+                                                                            <a className="play-btn" data-fancybox=""
+                                                                               href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">
+                                                                                {video.title}</a>
+                                                                            <span>{video.length} min</span>
+                                                                        </li>)
+                                                                    })}
+
+
+                                                                    <li>
+                                                                        <i className="icofont-lock"></i>
+                                                                        <a className="play-btn" data-fancybox=""
+                                                                           href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
+                                                                            Tags Lecture</a>
+                                                                        <span>20min</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>)
+                                                })}
+
+
                                                 <div className="card">
                                                     <div className="card-header" id="headingTwo">
                                                         <h5 className="mb-0">
@@ -306,7 +331,7 @@ function SingleCourse () {
                                         <div className="course-ratings row merged-10">
                                             <div className="rating-column col-lg-3 col-md-3 col-sm-3">
                                                 <div className="inner-column">
-                                                    <div className="total-rating">4.2</div>
+                                                    <div className="total-rating">{Math.round((rating/videocourses.reviews.length)*10)/10}</div>
                                                     <div className="rating">
                                                         <span className="icofont-star"></span>
                                                         <span className="icofont-star"></span>
@@ -406,79 +431,40 @@ function SingleCourse () {
                                 <div className="col-lg-12">
                                     <div className="main-wraper">
                                         <div className="comment-area product">
-                                            <h4 className="comment-title">03 Feedback</h4>
+                                            <h4 className="comment-title">{videocourses.reviews.length} Feedback</h4>
                                             <ul className="comments">
-                                                <li>
-                                                    <div className="comment-box">
-                                                        <div className="commenter-photo">
-                                                            <img alt="" src={`/assets/images/commenter-1.jpg`}/>
-                                                        </div>
-                                                        <div className="commenter-meta">
-                                                            <div className="comment-titles">
-                                                                <h6>willimes doe</h6>
-                                                                <span>12 june 2017</span>
-                                                                <ins><i className="icofont-star"></i> 4.5</ins>
+                                                {videocourses.reviews.map((review)=>{
+                                                    return (<li ref={scroll}>
+                                                        <div className="comment-box">
+                                                            <div className="commenter-photo">
+                                                                <img alt="" src={`/assets/images/commenter-1.jpg`}/>
                                                             </div>
-                                                            <p>
-                                                                Quis autem velum iure reprehe nderit. Lorem
-                                                                ipsum dolor sit amet adipiscing egetmassa
-                                                                pulvinar eu aliquet nibh dapibus.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="comment-box">
-                                                        <div className="commenter-photo">
-                                                            <img alt="" src={`/assets/images/commenter-2.jpg`}/>
-                                                        </div>
-                                                        <div className="commenter-meta">
-                                                            <div className="comment-titles">
-                                                                <h6>Qlark Jack</h6>
-                                                                <span>22 july 2017</span>
-                                                                <ins><i className="icofont-star"></i> 4.5</ins>
+                                                            <div className="commenter-meta">
+                                                                <div className="comment-titles">
+                                                                    <h6>{review.user.name}</h6>
+                                                                    <span>{format(review.createdAt)}</span>
+                                                                    <ins ><i className="icofont-star"></i> {review.rating}</ins>
+                                                                </div>
+                                                                <p>
+                                                                    {review.message}
+                                                                </p>
                                                             </div>
-                                                            <p>
-                                                                Quis autem velum iure reprehe nderit. Lorem
-                                                                ipsum dolor sit amet adipiscing egetmassa
-                                                                pulvinar eu aliquet nibh dapibus.
-                                                            </p>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="comment-box">
-                                                        <div className="commenter-photo">
-                                                            <img alt="" src={`/assets/images/commenter-3.jpg`}/>
-                                                        </div>
-                                                        <div className="commenter-meta">
-                                                            <div className="comment-titles">
-                                                                <h6>Olivia Take</h6>
-                                                                <span>15 jan 2016</span>
-                                                                <ins><i className="icofont-star"></i> 4.5</ins>
-                                                            </div>
-                                                            <p>
-                                                                Quis autem velum iure reprehe nderit. Lorem
-                                                                ipsum dolor sit amet adipiscing egetmassa
-                                                                pulvinar eu aliquet nibh dapibus.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                    </li>)
+                                                })}
+
+
                                             </ul>
                                             <div className="add-comment mt-5">
                                                 <span>Give Your Reviews</span>
-                                                <ul className="stars">
-                                                    <li><i className="icofont-star"></i></li>
-                                                    <li><i className="icofont-star"></i></li>
-                                                    <li><i className="icofont-star"></i></li>
-                                                    <li><i className="icofont-star"></i></li>
-                                                    <li><i className="icofont-star"></i></li>
-                                                </ul>
-                                                <form method="post" className="c-form">
-                                                    <input type="text" placeholder="Name"/>
-                                                    <input type="text" placeholder="Email"/>
-                                                    <textarea rows="4" placeholder="Write Something"></textarea>
+                                                <Rating initialRating={review.rating} onChange={rate} />
+
+                                                <form onSubmit={onSubmit} className="c-form">
+
+                                                    <textarea rows="4" placeholder="Write Something"
+                                                    onChange={(e)=> {
+                                                        setReview({...review, message: e.target.value})
+                                                    }}></textarea>
                                                     <button className="main-btn" type="submit">Add Review
                                                     </button>
                                                 </form>
@@ -494,7 +480,7 @@ function SingleCourse () {
             <Popupchat />
             <Appfooter />
         </Fragment>
-    );
+    );}
 }
 
 export default SingleCourse;

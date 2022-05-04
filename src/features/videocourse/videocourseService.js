@@ -1,7 +1,20 @@
 import axios from 'axios'
 
 const API_URL = '/pi/videocourse/'
+const API_URLR = '/pi/reviews/'
 
+// Create new review
+const addReview = async (reviewD,token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.post(API_URLR+reviewD.id, reviewD.review, config)
+
+  return response.data
+}
 // Create new videocourse
 const createvideocourse = async (videocourseData) => {
  /* const config = {
@@ -58,7 +71,7 @@ const videocourseService = {
   createvideocourse,
   getvideocourses,
   deletevideocourse,
-  getonevideocourse
+  getonevideocourse,addReview
 }
 
 export default videocourseService

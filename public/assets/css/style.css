@@ -17139,7 +17139,7 @@ a.wish-btn {
   width: 100%;
 }
 .bar {
-  margin: 0 auto 8px;
+  margin: 0 auto 16px;
   width: 100%;
 }
 .skill {
@@ -17339,4 +17339,90 @@ a.wish-btn {
   position: unset;
   vertical-align: middle;
   width: auto;
+}
+.video-lecture span {
+  float: right;
+}
+.video-lecture > li {
+  border-bottom: 1px solid #dadada;
+  display: inline-block;
+  margin-bottom: 15px;
+  width: 100%;
+}
+.video-lecture {
+  display: inline-block;
+  list-style: outside none none;
+  padding-left: 0;
+  width: 100%;
+}
+.video-lecture > li > i {
+  margin-right: 10px;
+}
+.video-lecture > li > a:hover {
+  color: red;
+}
+.video-lecture > li:last-child {
+  margin-bottom: 0;
+}
+.row.merged-10 > div {
+  padding: 0 10px;
+}
+.row.merged-10 {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+.total-rating {
+  font-size: 32px;
+  font-weight: 500;
+}
+.incldes {
+  display: inline-block;
+  width: 100%;
+}
+.incldes > ul {
+  display: inline-block;
+  list-style: outside none none;
+  margin: 0;
+  padding-left: 0;
+  width: 100%;
+}
+.incldes > ul > li {
+  display: inline-block;
+  margin-bottom: 15px;
+  width: 49%;
+}
+.incldes > ul > li > i {
+  margin-right: 5px;
+}
+.incldes > ul > li > span {
+  color: #72727e;
+  font-weight: 500;
+}
+.comment-titles h6 {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: capitalize;
+  vertical-align: top;
+}
+.comment-titles > span {
+  color: #92929e;
+  font-size: 11px;
+  margin-left: 6px;
+  margin-right: 22px;
+  text-transform: uppercase;
+}
+.comment-titles a.reply {
+  border-radius: 30px;
+  display: inline-block;
+  font-size: 13px;
+  padding: 2px 18px;
+  text-transform: capitalize;
+  vertical-align: middle;
+  margin-top: 0;
+  color: #fff;
+}
+.comment-titles a.reply:hover {
+  background: #000 none repeat scroll 0 0;
+  color: #fff;
 }
