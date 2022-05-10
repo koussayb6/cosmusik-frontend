@@ -33,7 +33,7 @@ const Login = ()=>{
         if(twoFactor){
             navigate('/otp')
         }
-        if ( user) {
+        if ( user?.token) {
             navigate('/')
         }
 

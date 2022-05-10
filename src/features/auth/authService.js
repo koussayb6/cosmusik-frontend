@@ -37,6 +37,8 @@ const verify = async (code) => {
 // otp verify
 // Login user
 const verifyOtp = async (userData) => {
+  console.log(userData)
+
   const response = await axios.post(API_URL + 'otp', userData)
   console.log(response)
   if (response.data) {

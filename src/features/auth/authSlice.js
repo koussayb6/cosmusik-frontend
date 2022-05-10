@@ -107,9 +107,10 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        if(action.payload.otp) {state.twoFactor=true
-          state.user = action.payload.user}
-        else state.user = action.payload
+        if(action.payload?.twoFactor)
+          state.twoFactor=true
+        state.user = action.payload
+
       })
         .addCase(login.rejected, (state, action) => {
           state.isLoading = false

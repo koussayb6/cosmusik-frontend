@@ -11,11 +11,11 @@ import {useToasts} from "react-toast-notifications";
 
 const Otp = ()=>{
     const [formData, setFormData] = useState({
-        code: ''
+        token: ''
     })
     const { addToast, removeToast } = useToasts();
 
-    const { code } = formData
+    const { token } = formData
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -29,7 +29,7 @@ const Otp = ()=>{
             addToast(message, { appearance: 'error' ,autoDismiss: true});
 
         }
-        if ( !twoFactor || user.token) {
+        if ( user?.token) {
             navigate('/')
         }
 
@@ -46,7 +46,7 @@ const Otp = ()=>{
         e.preventDefault()
 
         const userData = {
-            code, name: user.name
+            token, name: user.name
         }
 
         dispatch(otp(userData))
@@ -80,9 +80,9 @@ const Otp = ()=>{
                                         <input type="text"
                                                className="style2-input ps-5 form-control text-grey-900 font-xsss fw-600"
                                                id='email'
-                                               name='code'
-                                               value={code}
-                                               placeholder='Enter your code'
+                                               name='token'
+                                               value={token}
+                                               placeholder='Enter your token'
                                                onChange={onChange} />
                                     </div>
 
