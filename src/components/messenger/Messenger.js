@@ -10,6 +10,7 @@ export default function Messenger({ currentChat }) {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [fileName, setFileName] = useState("");
 
   //el authorisation ya ahmed mta koussay
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -23,6 +24,11 @@ export default function Messenger({ currentChat }) {
 
   const socket = useRef();
 
+  const onChangeFile = (e) => {
+    setFileName(e.target.files[0]);
+    console.log(e.target.files[0]);
+  };
+
   useEffect(() => {
     socket.current = io("ws://localhost:8901");
     socket.current.emit("setup", user);
@@ -30,6 +36,7 @@ export default function Messenger({ currentChat }) {
       setArrivalMessage({
         chatId: currentChat._id,
         content: newMessage,
+        imageMessage: fileName,
       });
     });
     socket.current.on("test", (data) => {
@@ -69,13 +76,14 @@ export default function Messenger({ currentChat }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const message = {
-      content: newMessage,
-      chatId: currentChat._id,
-    };
+
+    const formData = new FormData();
+    formData.append("content", newMessage);
+    formData.append("chatId", currentChat._id);
+    formData.append("imageMessage", fileName);
 
     try {
-      const { data } = await API.post("/api/message/", message);
+      const { data } = await API.post("/api/message/", formData);
 
       socket.current.emit("join chat", currentChat._id);
       //const receiverId = currentChat.users.find((u) => u._id !== user._id);
@@ -121,10 +129,29 @@ export default function Messenger({ currentChat }) {
                   className="chat-bottom dark-bg p-3 shadow-none theme-dark-bg"
                   style={{ width: "98%" }}
                 >
-                  <form className="chat-form" onSubmit={handleSubmit}>
-                    <button className="bg-grey float-left">
+                  <form
+                    className="chat-form"
+                    encType="multipart/form-data"
+                    onSubmit={handleSubmit}
+                  >
+                    <button className="bg-grey float-left me-1">
                       <i className="ti-microphone text-grey-600"></i>
                     </button>
+                    <label
+                      for="file"
+                      className=" btn  btn-round bg-grey float-left"
+                    >
+                      {" "}
+                      <i className="ti-image text-grey-600"></i>
+                    </label>
+                    <input
+                      id="file"
+                      style={{ display: "none" }}
+                      type="file"
+                      className="from-controle-file bg-grey float-left"
+                      onChange={onChangeFile}
+                    />
+
                     <div className="form-group">
                       <input
                         type="text"

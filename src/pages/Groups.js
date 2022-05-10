@@ -13,7 +13,8 @@ function Groups() {
   const [groups, setGroups] = useState([]);
   const [show, setShow] = useState(false);
   const [groupID, setGroupID] = useState(null);
-
+  const [joined, setJoined] = useState(false);
+  const [pending, setPending] = useState(false);
   //el authorisation ya ahmed mta koussay
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -60,6 +61,14 @@ function Groups() {
   const routeChange = (idGroup) => {
     navigate("../grouppage/" + idGroup);
   };
+  const checkpending = (reqs) => {
+    reqs.map((req) => {
+      console.log(req.requesterId === user._id);
+      return req.requesterId._id == user._id;
+    });
+    return false;
+  };
+
   return (
     <>
       <Header></Header>
@@ -86,13 +95,22 @@ function Groups() {
                             className="avatar position-absolute w75 z-index-1 left-15"
                             style={{ marginTop: `-40px` }}
                           >
-                            <img
-                              src={
-                                "https://cdn-icons-png.flaticon.com/512/219/219986.png"
-                              }
-                              alt="avater"
-                              className="float-right p-1 bg-white rounded-circle w-100 "
-                            />
+                            {value.groupImage ? (
+                              <img
+                                src={`/uploads/${value.groupImage}`}
+                               
+                                alt="avater"
+                                className="float-right p-1 bg-white rounded-circle w-100 "
+                              />
+                            ) : (
+                              <img
+                                src={
+                                  "https://cdn-icons-png.flaticon.com/512/219/219986.png"
+                                }
+                                alt="avater"
+                                className="float-right p-1 bg-white rounded-circle w-100 "
+                              />
+                            )}
                           </figure>
                           <div className="clearfix"></div>
                           <h4
@@ -120,15 +138,26 @@ function Groups() {
                                 ></img>
                               )}
                             </a>
-
-                            <a
-                              onClick={() => {
-                                joinGroup(value._id, value.public);
-                              }}
-                              className="text-center p-2 lh-24 w100 ms-1 ls-3 d-inline-block rounded-xl bg-current font-xsssss fw-700 ls-lg text-white"
-                            >
-                              Join Group
-                            </a>
+                            {value.members.includes(user._id) ? (
+                              <a className="text-center p-2 lh-24 w100 ms-1 ls-3 d-inline-block rounded-xl bg-cyan font-xsssss fw-700 ls-lg text-white ">
+                                Joined
+                              </a>
+                            ) : value.requests.find(
+                                (req) => req.requesterId === user._id
+                              ) ? (
+                              <a className="text-center p-2 lh-24 w100 ms-1 ls-3 d-inline-block rounded-xl bg-dark font-xsssss fw-700 ls-lg text-white ">
+                                Pending
+                              </a>
+                            ) : (
+                              <a
+                                onClick={() => {
+                                  joinGroup(value._id, value.public);
+                                }}
+                                className="text-center p-2 lh-24 w100 ms-1 ls-3 d-inline-block rounded-xl bg-current font-xsssss fw-700 ls-lg text-white"
+                              >
+                                Join Group
+                              </a>
+                            )}
                           </span>
                         </div>
                       </div>

@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { Component, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import AreYsurModal from "./AreYsurModal";
+import { useNavigate } from "react-router-dom";
+
 function ProfilecardOne({ group }) {
   //el authorisation ya ahmed mta koussay
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -32,6 +35,16 @@ function ProfilecardOne({ group }) {
       toast.warn("failed");
     }
   };
+
+  const updateGroyp = async (groupId) => {
+    const { data } = await API.put("/api/group/" + groupId);
+    toast.success("Congratulations ! Your Profile is Private now");
+  };
+
+  let navigate = useNavigate();
+  const routeChange = (idGroup) => {
+    navigate("../requests/" + idGroup);
+  };
   return (
     <div className="card w-100 shadow-xss rounded-xxl overflow-hidden border-0 mb-3 mt-3 pb-3">
       <div
@@ -43,7 +56,7 @@ function ProfilecardOne({ group }) {
       <div className="card-body d-block pt-4 text-center">
         <figure className="avatar mt--6 position-relative w75 z-index-1 w100 z-index-1 ms-auto me-auto">
           <img
-            src="/assets/images/user.png"
+            src={`/uploads/${group.groupImage}`}
             alt="avater"
             className="p-1 bg-white rounded-xl w-100"
           />
@@ -66,7 +79,14 @@ function ProfilecardOne({ group }) {
           <b className="text-grey-900 mb-1 font-xss fw-700 d-inline-block ls-3 text-dark">
             {group.requests.length}
           </b>{" "}
-          Requests
+          <p
+            onClick={() => {
+              routeChange(group._id);
+            }}
+          >
+            {" "}
+            Requests{" "}
+          </p>
         </h4>
         <h4 className="font-xsssss text-center text-grey-500 fw-600 ms-2 me-2">
           <b className="text-grey-900 mb-1 font-xss fw-700 d-inline-block ls-3 text-dark">
@@ -78,11 +98,11 @@ function ProfilecardOne({ group }) {
       <div className="card-body d-flex align-items-center justify-content-center ps-4 pe-4 pt-0">
         <button
           onClick={() => {
-            joinGroup(group._id);
+            joinGroup(group._id, group.public);
           }}
           className="bg-success p-3 z-index-1 rounded-3 text-white font-xsssss text-uppercase fw-700 ls-3"
         >
-          Jin Group
+          Join Group
         </button>
         <a
           href="/defaultemailbox"
@@ -91,10 +111,12 @@ function ProfilecardOne({ group }) {
           <i className="feather-mail font-md"></i>
         </a>
         <a
-          href="/home"
+          onClick={() => {
+            updateGroyp(group._id);
+          }}
           className="bg-greylight theme-white-bg btn-round-lg ms-2 rounded-3 text-grey-700"
         >
-          <i className="ti-more font-md"></i>
+          <i className="feather-lock font-md"></i>
         </a>
       </div>
     </div>

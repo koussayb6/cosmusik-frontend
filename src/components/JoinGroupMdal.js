@@ -25,13 +25,17 @@ function JoinGroupMdal({ groupID }) {
   });
 
   const ajoutReq = async (groupID) => {
+    if (description === "") {
+      toast.warn("Right something plz");
+    }
     const request = {
-      requesterId: user._id,
       description: description,
     };
     try {
       const { data } = await API.post("/api/group/sendReq/" + groupID, request);
-      toast.success("Request Send");
+      toast.success("Request Send", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       handleClose();
     } catch (error) {
       console.log(error);

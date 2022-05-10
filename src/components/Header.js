@@ -76,7 +76,7 @@ class Header extends Component {
           <i className="feather-video font-lg bg-greylight btn-round-lg theme-dark-bg text-grey-500 "></i>
         </NavLink>
         <NavLink
-          to="/defaultgroup"
+          to="/groups"
           className="p-2 text-center ms-0 menu-icon center-menu-icon"
         >
           <i className="feather-user font-lg bg-greylight btn-round-lg theme-dark-bg text-grey-500 "></i>
@@ -218,10 +218,7 @@ class Header extends Component {
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      to="/defaultgroup"
-                      className="nav-content-bttn open-font"
-                    >
+                    <Link to="/groups" className="nav-content-bttn open-font">
                       <i className="feather-zap btn-round-md bg-mini-gradiant me-3"></i>
                       <span>Popular Groups</span>
                     </Link>

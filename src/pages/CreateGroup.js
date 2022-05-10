@@ -9,6 +9,11 @@ import { toast } from "react-toastify";
 
 function CreateGroup() {
   const [title, setTitle] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const onChangeFile = (e) => {
+    setFileName(e.target.files[0]);
+  };
   //el authorisation ya ahmed mta koussay
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -26,11 +31,16 @@ function CreateGroup() {
   };
 
   const createGroup = async () => {
-    const group = {
-      title: title,
-    };
+    if (title === "") {
+      toast.warn("Right Title plz");
+    }
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("groupImage", fileName);
+
     try {
-      const { data } = await API.post("/api/group/" + user._id, group);
+      const { data } = await API.post("/api/group/" + user._id, formData);
       toast.success("Group Created");
       routeChange();
     } catch (error) {
@@ -42,34 +52,46 @@ function CreateGroup() {
     <>
       <div className="main-content right-chat-active ">
         <div className="card shadow-xss w-100 d-block d-flex border-5 p-4 mb-6">
-          <Form.Group className="mb-3">
-            <Form.Control
-              placeholder="Name of the group"
-              enable
-              onChange={(event) => {
-                setTitle(event.target.value);
+          <form encType="multipart/form-data">
+            <Form.Group className="mb-3">
+              <Form.Control
+                placeholder="Name of the group"
+                enable
+                onChange={(event) => {
+                  setTitle(event.target.value);
+                }}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                label="You Want the group Privat?"
+                id="accept"
+                name="accept"
+                value="yes"
+                enable
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <label htmlFor="file"> Choose Group Image</label>
+              <input
+                type="file"
+                filename="groupImage"
+                className="from-controle-file"
+                onChange={onChangeFile}
+              />
+            </Form.Group>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onClick={() => {
+                createGroup();
               }}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label="You Want the group Privat?"
-              id="accept"
-              name="accept"
-              value="yes"
-              enable
-            />
-          </Form.Group>
-          <button
-            type="button"
-            class="btn btn-primary"
-            onClick={() => {
-              createGroup();
-            }}
-          >
-            Create group
-          </button>
+            >
+              Create group
+            </button>
+          </form>
         </div>
       </div>
     </>

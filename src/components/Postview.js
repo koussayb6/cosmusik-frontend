@@ -60,7 +60,7 @@ class Postview extends Component {
             <div className="row ps-2 pe-2">
               <div className="col-sm-12 p-1">
                 <img
-                  src={`/assets/images/${postimage}`}
+                  src="https://i.ytimg.com/vi/tiAlSpyWIDs/maxresdefault.jpg"
                   className="rounded-3 w-100"
                   alt="post"
                 />

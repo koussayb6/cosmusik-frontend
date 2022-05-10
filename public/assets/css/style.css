@@ -1765,10 +1765,7 @@ sup {
   top: -0.5em;
 }
 
-a {
-  color: #1E74FD;
-  text-decoration: underline;
-}
+
 a:hover {
   color: #185dca;
 }
@@ -15759,7 +15756,7 @@ select.sort {
   width: 100%;
 }
 .chat-form .form-group {
-  width: calc(100% - 90px);
+  width: calc(100% - 140px);
   border-radius: 30px;
   float: left;
   margin: 0 5px;

@@ -41,6 +41,7 @@ import Comingsoon from "./pages/Comingsoon";
 import Hotelsingle from "./pages/Hotelsingle";
 import Allchats from "./pages/Allchats";
 import CreateGroup from "./pages/CreateGroup";
+import GroupRequests from "./pages/GroupRequests";
 
 export function App() {
   return (
@@ -86,6 +87,7 @@ export function App() {
         <Route exact path="/defaultevent" element={<Event />} />
         <Route exact path="/defaulthotel" element={<Hotel />} />
         <Route exact path="/grouppage/:id" element={<Grouppage />} />
+        <Route exact path="/requests/:id" element={<GroupRequests />} />
         <Route exact path="/userpage" element={<Userpage />} />
         <Route exact path="/authorpage" element={<Authorpage />} />
         <Route exact path="/comingsoon" element={<Comingsoon />} />

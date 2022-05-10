@@ -18,7 +18,7 @@ function Pagetitle() {
               />
             </div>
           </form>
-          <Link to="/creategroup"> New Group Chat</Link>
+          <Link to="/creategroup"> New Group</Link>
         </h2>
       </div>
     </>
