@@ -10,6 +10,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: '',
+  twoFactor:false
 }
 
 // Register user
@@ -43,6 +44,32 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
   }
 })
 
+// Login otp
+export const otp = createAsyncThunk('auth/otp', async (user, thunkAPI) => {
+  try {
+    return await authService.verifyOtp(user)
+  } catch (error) {
+    const message =
+        (error.response && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString()
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+
+// verify and login user
+export const verify = createAsyncThunk('auth/verify', async (code, thunkAPI) => {
+  try {
+    return await authService.verify(code)
+  } catch (error) {
+    const message =
+        (error.response && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString()
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+
 export const logout = createAsyncThunk('auth/logout', async () => {
   await authService.logout()
 })
@@ -66,7 +93,7 @@ export const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.user = action.payload
+        state.message = action.payload.message
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false
@@ -80,13 +107,42 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
+        if(action.payload?.twoFactor)
+          state.twoFactor=true
         state.user = action.payload
+
       })
-      .addCase(login.rejected, (state, action) => {
+        .addCase(login.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+          state.message = action.payload
+          state.user = null
+        })
+        .addCase(otp.pending, (state) => {
+          state.isLoading = true
+        })
+        .addCase(otp.fulfilled, (state, action) => {
+          state.isLoading = false
+          state.isSuccess = true
+          state.twoFactor=false
+          state.user = action.payload
+        })
+        .addCase(otp.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+          state.message = action.payload
+        })
+      .addCase(verify.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
         state.user = null
+      }).addCase(verify.pending, (state) => {
+        state.isLoading = true
+      }).addCase(verify.fulfilled, (state, action) => {
+        state.isLoading = false
+      state.isSuccess = true
+      state.user = action.payload
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null
