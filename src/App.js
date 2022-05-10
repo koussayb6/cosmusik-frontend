@@ -39,6 +39,7 @@ import Userpage from "./pages/Userpage";
 import Authorpage from "./pages/Authorpage";
 import Comingsoon from "./pages/Comingsoon";
 import Hotelsingle from "./pages/Hotelsingle";
+import Calendar from "./components/Calendar";
 
 export function App() {
 
@@ -61,8 +62,9 @@ export function App() {
                     <Route exact path='/defaultsettings' element={<Settings />} />
                     <Route exact path='/defaultvideo' element={<Videos />} />
                     <Route exact path='/defaultanalytics' element={<Analytics />} />
+                    <Route exact path='/calendar' element={<Calendar /> } />
 
-
+                    
                     <Route exact path='/accountinformation' element={<Account />} />
                     <Route exact path='/defaultmember' element={<Member />} />
                     <Route exact path='/contactinformation' element={<Contactinfo />} />

@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import {getinteractivecourses, reset} from "../features/interactivecourse/interactivecourseSlice";
 import Oneinteractivecourse from "../components/Oneinteractivecourse";
+import AddInt from "../components/AddInt";
 
 
 
@@ -49,7 +50,9 @@ function ShopThree (){
                                     <div className="row">
                                         <div className="col-lg-12">
                                             <div className="card p-md-5 p-4 bg-primary-gradiant rounded-3 shadow-xss bg-pattern border-0 overflow-hidden">
-                                                <div className="bg-pattern-div"></div>
+                                                <div className="bg-pattern-div">
+                                                <AddInt interactivecourses={interactivecourses}/>
+                                                </div>
                                                 <h2 className="display2-size display2-md-size fw-700 text-white mb-0 mt-0">Interactive Courses <span className="fw-700 ls-3 text-grey-200 font-xsssss mt-2 d-block">{interactivecourses.length} INTERACTIVE COURSES FOUND</span></h2>
                                             </div>
                                         </div>
@@ -77,6 +80,7 @@ function ShopThree (){
 
                     </div>
                 </div>
+                
                 <Popupchat />
                 <Appfooter />
             </Fragment>
