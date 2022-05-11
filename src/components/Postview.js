@@ -1,92 +1,252 @@
-import React,{Component} from 'react';
+import axios from "axios";
+import React, { Component, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { likePost } from "../features/posts/postSlice";
+import { deletepost } from "../features/posts/postSlice";
+function Postview({ post, avater, postimage, postvideo }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const dispatch = useDispatch();
+  const [likes, setLikes] = useState(0);
+  const API_URL = "/api/posts/";
+const deleteposta = () => {
+  dispatch(deletepost(post._id));
+};
+  const toggleOpen = () => setIsOpen(!isOpen);
+  const toggleActive = () => setIsActive(false);
+  const { user } = useSelector((state) => state.auth);
 
+  const menuClass = `${isOpen ? " show" : ""}`;
+  const emojiClass = `${isActive ? " active" : ""}`;
+  const like = async () => {
+    console.log(user.token);
 
-class Postview extends Component {
-    state = {
-        isOpen: false
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
     };
-
-    toggleOpen = () => this.setState({ isOpen: !this.state.isOpen });
-    toggleActive = () => this.setState({ isActive: !this.state.isActive });
     
-    render() {
-        
-        const {user ,time , des, avater , postimage , postvideo ,id } = this.props;
-        
-        const menuClass = `${this.state.isOpen ? " show" : ""}`;
-        const emojiClass = `${this.state.isActive ? " active" : ""}`;
 
-        return (
-            <div className="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-3">
-                <div className="card-body p-0 d-flex">
-                    <figure className="avatar me-3"><img src={`assets/images/${avater}`} alt="avater" className="shadow-sm rounded-circle w45" /></figure>
-                    <h4 className="fw-700 text-grey-900 font-xssss mt-1"> {user} <span className="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500"> {time}</span></h4>
-                    <div className="ms-auto pointer"><i className="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></div>
-                    
-                </div>
-                {postvideo ?  
-                <div className="card-body p-0 mb-3 rounded-3 overflow-hidden uttam-die">
-                    <a href="/defaultvideo" className="video-btn">
-                        <video autoPlay loop className="float-right w-100">
-                            <source src={`assets/images/${postvideo}`} type="video/mp4" />
-                        </video>
-                    </a>
-                </div>
-                : ''}
-                <div className="card-body p-0 me-lg-5">
-                    <p className="fw-500 text-grey-500 lh-26 font-xssss w-100 mb-2">{des} <a href="/defaultvideo" className="fw-600 text-primary ms-2">See more</a></p>
-                </div>
-                {postimage ?
-                <div className="card-body d-block p-0 mb-3">
-                    <div className="row ps-2 pe-2">
-                        <div className="col-sm-12 p-1"><img src={`assets/images/${postimage}`} className="rounded-3 w-100" alt="post" /></div>                                        
-                    </div>
-                </div>
-                : ''}
-                <div className="card-body d-flex p-0">
-                    <div className="emoji-bttn pointer d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2" onClick={this.toggleActive}><i className="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i className="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>2.8K Like</div>
-                    <div className={`emoji-wrap pointer ${emojiClass}`}>
-                        <ul className="emojis list-inline mb-0">
-                            <li className="emoji list-inline-item"><i className="em em---1"></i> </li>
-                            <li className="emoji list-inline-item"><i className="em em-angry"></i></li>
-                            <li className="emoji list-inline-item"><i className="em em-anguished"></i> </li>
-                            <li className="emoji list-inline-item"><i className="em em-astonished"></i> </li>
-                            <li className="emoji list-inline-item"><i className="em em-blush"></i></li>
-                            <li className="emoji list-inline-item"><i className="em em-clap"></i></li>
-                            <li className="emoji list-inline-item"><i className="em em-cry"></i></li>
-                            <li className="emoji list-inline-item"><i className="em em-full_moon_with_face"></i></li>
-                        </ul>
-                    </div>
-                    <a href="/defaultvideo" className="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i className="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span className="d-none-xss">22 Comment</span></a>
-                    <div className={`pointer ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss ${menuClass}`} id={`dropdownMenu${id}`} data-bs-toggle="dropdown" aria-expanded="false" onClick={this.toggleOpen}><i className="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span className="d-none-xs">Share</span></div>
-                    <div className={`dropdown-menu dropdown-menu-end p-4 rounded-xxl border-0 shadow-lg right-0 ${menuClass}`} aria-labelledby={`dropdownMenu${id}`}>
-                        <h4 className="fw-700 font-xss text-grey-900 d-flex align-items-center">Share <i className="feather-x ms-auto font-xssss btn-round-xs bg-greylight text-grey-900 me-2"></i></h4>
-                        <div className="card-body p-0 d-flex">
-                            <ul className="d-flex align-items-center justify-content-between mt-2">
-                                <li className="me-1"><span className="btn-round-lg pointer bg-facebook"><i className="font-xs ti-facebook text-white"></i></span></li>
-                                <li className="me-1"><span className="btn-round-lg pointer bg-twiiter"><i className="font-xs ti-twitter-alt text-white"></i></span></li>
-                                <li className="me-1"><span className="btn-round-lg pointer bg-linkedin"><i className="font-xs ti-linkedin text-white"></i></span></li>
-                                <li className="me-1"><span className="btn-round-lg pointer bg-instagram"><i className="font-xs ti-instagram text-white"></i></span></li>
-                                <li><span className="btn-round-lg pointer bg-pinterest"><i className="font-xs ti-pinterest text-white"></i></span></li>
-                            </ul>
-                        </div>
-                        <div className="card-body p-0 d-flex">
-                            <ul className="d-flex align-items-center justify-content-between mt-2">
-                                <li className="me-1"><span className="btn-round-lg pointer bg-tumblr"><i className="font-xs ti-tumblr text-white"></i></span></li>
-                                <li className="me-1"><span className="btn-round-lg pointer bg-youtube"><i className="font-xs ti-youtube text-white"></i></span></li>
-                                <li className="me-1"><span className="btn-round-lg pointer bg-flicker"><i className="font-xs ti-flickr text-white"></i></span></li>
-                                <li className="me-1"><span className="btn-round-lg pointer bg-black"><i className="font-xs ti-vimeo-alt text-white"></i></span></li>
-                                <li><span className="btn-round-lg pointer bg-whatsup"><i className="font-xs feather-phone text-white"></i></span></li>
-                            </ul>
-                        </div>
-                        <h4 className="fw-700 font-xssss mt-4 text-grey-500 d-flex align-items-center mb-3">Copy Link</h4>
-                        <i className="feather-copy position-absolute right-35 mt-3 font-xs text-grey-500"></i>
-                        <input type="text" placeholder="https://socia.be/1rGxjoJKVF0" className="bg-grey text-grey-500 font-xssss border-0 lh-32 p-2 font-xssss fw-600 rounded-3 w-100 theme-dark-bg" />
-                    </div>
-                </div>
-            </div>
-        );
+    const response = await axios.get(API_URL + post._id + "/like", config);
+    console.log(response.data);
+    if (response.data == true) {
+      setLikes((previouslikes) => previouslikes + 1);
+    } else {
+      setLikes((previouslikes) => previouslikes - 1);
     }
+    //return response.data;
+  };
+  useEffect(() => {
+    setLikes(post.likers.length);
+  }, []);
+
+  const likese = () => {
+    let liked = likePost(post._id, user.token);
+    if (liked == true) {
+      setLikes((previouslikes) => previouslikes + 1);
+    } else {
+      setLikes((previouslikes) => previouslikes - 1);
+    }
+  };
+
+  return (
+    <div className="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-3">
+      <div className="card-body p-0 d-flex">
+        <figure className="avatar me-3">
+          <img
+            src={`assets/images/${avater}`}
+            alt="avater"
+            className="shadow-sm rounded-circle w45"
+          />
+        </figure>
+        <h4 className="fw-700 text-grey-900 font-xssss mt-1">
+          {" "}
+          {post.posterId.name}{" "}
+          <span className="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">
+            {" "}
+            {post.createdAt}
+          </span>
+        </h4>
+        <div className="ms-auto pointer">
+          {" "}
+          <button
+            className="p-2 lh-20 w100 bg-grey text-grey-800 text-center font-xssss fw-600 ls-1 rounded-xl"
+            onClick={deleteposta}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      {postvideo ? (
+        <div className="card-body p-0 mb-3 rounded-3 overflow-hidden uttam-die">
+          <a href="/defaultvideo" className="video-btn">
+            <video autoPlay loop className="float-right w-100">
+              <source src={`assets/images/${postvideo}`} type="video/mp4" />
+            </video>
+          </a>
+        </div>
+      ) : (
+        ""
+      )}
+      <div className="card-body p-0 me-lg-5">
+        <p className="fw-500 text-grey-500 lh-26 font-xssss w-100 mb-2">
+          {post.message}{" "}
+          <a href="/defaultvideo" className="fw-600 text-primary ms-2">
+            See more
+          </a>
+        </p>
+      </div>
+      {postimage ? (
+        <div className="card-body d-block p-0 mb-3">
+          <div className="row ps-2 pe-2">
+            <div className="col-sm-12 p-1">
+              <img
+                src={`assets/images/${postimage}`}
+                className="rounded-3 w-100"
+                alt="post"
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      <div className="card-body d-flex p-0">
+        <div
+          className="emoji-bttn pointer d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"
+          onClick={() => toggleActive()}
+        >
+          <i
+            className="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"
+            onClick={like}
+          ></i>
+          {likes} Like
+        </div>
+        <div className={`emoji-wrap pointer ${emojiClass}`}>
+          <ul className="emojis list-inline mb-0">
+            <li className="emoji list-inline-item">
+              <i className="em em---1"></i>{" "}
+            </li>
+            <li className="emoji list-inline-item">
+              <i className="em em-angry"></i>
+            </li>
+            <li className="emoji list-inline-item">
+              <i className="em em-anguished"></i>{" "}
+            </li>
+            <li className="emoji list-inline-item">
+              <i className="em em-astonished"></i>{" "}
+            </li>
+            <li className="emoji list-inline-item">
+              <i className="em em-blush"></i>
+            </li>
+            <li className="emoji list-inline-item">
+              <i className="em em-clap"></i>
+            </li>
+            <li className="emoji list-inline-item">
+              <i className="em em-cry"></i>
+            </li>
+            <li className="emoji list-inline-item">
+              <i className="em em-full_moon_with_face"></i>
+            </li>
+          </ul>
+        </div>
+        <a
+          href="/defaultvideo"
+          className="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"
+        >
+          <i className="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i>
+          <span className="d-none-xss">22 Comment</span>
+        </a>
+        <div
+          className={`pointer ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss ${menuClass}`}
+          id={`dropdownMenu${post._id}`}
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          onClick={() => toggleOpen()}
+        >
+          <i className="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i>
+          <span className="d-none-xs">Share</span>
+        </div>
+        <div
+          className={`dropdown-menu dropdown-menu-end p-4 rounded-xxl border-0 shadow-lg right-0 ${menuClass}`}
+          aria-labelledby={`dropdownMenu${post._id}`}
+        >
+          <h4 className="fw-700 font-xss text-grey-900 d-flex align-items-center">
+            Share{" "}
+            <i className="feather-x ms-auto font-xssss btn-round-xs bg-greylight text-grey-900 me-2"></i>
+          </h4>
+          <div className="card-body p-0 d-flex">
+            <ul className="d-flex align-items-center justify-content-between mt-2">
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-facebook">
+                  <i className="font-xs ti-facebook text-white"></i>
+                </span>
+              </li>
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-twiiter">
+                  <i className="font-xs ti-twitter-alt text-white"></i>
+                </span>
+              </li>
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-linkedin">
+                  <i className="font-xs ti-linkedin text-white"></i>
+                </span>
+              </li>
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-instagram">
+                  <i className="font-xs ti-instagram text-white"></i>
+                </span>
+              </li>
+              <li>
+                <span className="btn-round-lg pointer bg-pinterest">
+                  <i className="font-xs ti-pinterest text-white"></i>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div className="card-body p-0 d-flex">
+            <ul className="d-flex align-items-center justify-content-between mt-2">
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-tumblr">
+                  <i className="font-xs ti-tumblr text-white"></i>
+                </span>
+              </li>
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-youtube">
+                  <i className="font-xs ti-youtube text-white"></i>
+                </span>
+              </li>
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-flicker">
+                  <i className="font-xs ti-flickr text-white"></i>
+                </span>
+              </li>
+              <li className="me-1">
+                <span className="btn-round-lg pointer bg-black">
+                  <i className="font-xs ti-vimeo-alt text-white"></i>
+                </span>
+              </li>
+              <li>
+                <span className="btn-round-lg pointer bg-whatsup">
+                  <i className="font-xs feather-phone text-white"></i>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <h4 className="fw-700 font-xssss mt-4 text-grey-500 d-flex align-items-center mb-3">
+            Copy Link
+          </h4>
+          <i className="feather-copy position-absolute right-35 mt-3 font-xs text-grey-500"></i>
+          <input
+            type="text"
+            placeholder="https://socia.be/1rGxjoJKVF0"
+            className="bg-grey text-grey-500 font-xssss border-0 lh-32 p-2 font-xssss fw-600 rounded-3 w-100 theme-dark-bg"
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Postview;

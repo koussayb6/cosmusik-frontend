@@ -2,49 +2,49 @@ import React,{Component} from 'react';
 import Slider from "react-slick";
 
 const memberList = [
-    {   
-        bgUrl: 'story.png',
-        imageUrl: 'user.png',
-        name: 'Aliqa Macale ',
-        email: '@AliqaMacale',
-    },
-    {   
-        bgUrl: 'story.png',
-        imageUrl: 'user.png',
-        name: 'Seary Victor ',
-        email: '@SearyVictor',
-    },
-    {   
-        bgUrl: 'story.png',
-        imageUrl: 'user.png',
-        name: 'John Steere ',
-        email: '@JohnSteere',
-    },
-    {   
-        bgUrl: 'story.png',
-        imageUrl: 'user.png',
-        name: 'Mohannad Zitoun ',
-        email: '@MohannadZitoun',
-    },
-    {   
-        bgUrl: 'story.png',
-        imageUrl: 'user.png',
-        name: 'Studio Express ',
-        email: '@StudioExpress',
-    },
-    {   
-        bgUrl: 'story.png',
-        imageUrl: 'user.png',
-        name: 'Hendrix Stamp ',
-        email: '@HendrixStamp',
-    },
-    {   
-        bgUrl: 'story.png',
-        imageUrl: 'user.png',
-        name: 'Mohannad Zitoun ',
-        email: '@MohannadZitoun',
-    },
-]
+  {
+    bgUrl: "story.png",
+    imageUrl: "user.png",
+    name: "Knani ",
+    email: "test@gmail.com",
+  },
+  {
+    bgUrl: "story.png",
+    imageUrl: "user.png",
+    name: "sleh ",
+    email: "ahmed@gmail.com",
+  },
+  {
+    bgUrl: "story.png",
+    imageUrl: "user.png",
+    name: "koussay",
+    email: "knani@gmail.com",
+  },
+  {
+    bgUrl: "story.png",
+    imageUrl: "user.png",
+    name: "ahmeddd ",
+    email: "ahmedbenhamida@yahoo.com",
+  },
+  {
+    bgUrl: "story.png",
+    imageUrl: "user.png",
+    name: "Studio Express ",
+    email: "@StudioExpress",
+  },
+  {
+    bgUrl: "story.png",
+    imageUrl: "user.png",
+    name: "Hendrix Stamp ",
+    email: "@HendrixStamp",
+  },
+  {
+    bgUrl: "story.png",
+    imageUrl: "user.png",
+    name: "Mohannad Zitoun ",
+    email: "@MohannadZitoun",
+  },
+];
 
 class Friendsilder extends Component {
     render() {

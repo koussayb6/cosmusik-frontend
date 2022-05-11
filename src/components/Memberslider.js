@@ -5,8 +5,8 @@ const memberList = [
     {   
         bgUrl: 'story.png',
         imageUrl: 'user.png',
-        name: 'Aliqa Macale ',
-        email: 'support@gmail.com',
+        name: 'Knani ',
+        email: 'test@gmail.com',
     },
     {   
         bgUrl: 'story.png',

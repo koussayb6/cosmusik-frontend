@@ -17,9 +17,7 @@ class Userpage extends Component {
     render() {
         return (
             <Fragment> 
-                <Header />
-                <Leftnav />
-                <Rightchat />
+           
 
 
                 <div className="main-content right-chat-active">
