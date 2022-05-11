@@ -1,4 +1,4 @@
-import React, { Component , Fragment } from "react";
+import React, {Component, Fragment, useEffect, useState} from "react";
 import Header from '../components/Header';
 import Leftnav from '../components/Leftnav';
 import Rightchat from '../components/Rightchat';
@@ -6,31 +6,63 @@ import Appfooter from '../components/Appfooter';
 import Popupchat from '../components/Popupchat';
 
 import Slider from "react-slick";
+import {useNavigate, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getoneinteractivecourse, getinteractivecourses, reset} from "../features/interactivecourse/interactivecourseSlice";
+import Oneinteractivecourse from "../components/Oneinteractivecourse";
+import Oneweek from "../components/Oneweek";
+import {forEach} from "react-bootstrap/ElementChildren";
+
 
 const slideList = [
-    {   
+    {
         imageUrl: 'product.png',
         name: 'product-image ',
     },
-    {   
+    {
         imageUrl: 'product.png',
         name: 'product-image ',
     },
-    {   
+    {
         imageUrl: 'product.png',
         name: 'product-image ',
     },
-    {   
+    {
         imageUrl: 'product.png',
         name: 'product-image ',
     },
-    
+
 ]
 
 
-class Singleproduct extends Component {
-    render() {
-        const hotelsettings = {
+function Singleproduct () {
+    //const [videoCors,setVideoCors] = useState();
+    let {id} = useParams();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const { interactivecourses, isLoading, isError, message, isSuccess } = useSelector(
+        (state) => state.interactivecourses
+    )
+    //const [interactivecourses, setVideocourses] = useState({})
+    //const { user } = useSelector((state) => state.auth)
+    useEffect(() => {
+        if (isError) {
+            console.log(message)
+        }
+
+
+        dispatch(getoneinteractivecourse(id))
+        console.log(interactivecourses)
+        return () => {
+            dispatch(reset())
+        }
+    }, [navigate, isError, message, dispatch])
+    const weeks = [];
+    weeks.push(interactivecourses.weeks)
+    console.log(interactivecourses.weeks)
+
+    const hotelsettings = {
             arrows: true,
             dots: true,
             infinite: true,
@@ -38,79 +70,450 @@ class Singleproduct extends Component {
             slidesToShow: 1,
             centerMode: false,
             variableWidth: false,
-            
+
         };
         return (
-            <Fragment> 
-
+            <Fragment>
+                <Header />
+                <Leftnav />
                     <div className="main-content right-chat-active">
                         <div className="middle-sidebar-bottom">
                             <div className="middle-sidebar-left pe-0">
-                                <div className="row">
-                                    <div className="col-lg-1 p-0 d-none d-lg-block">
-                                        <img src="https://via.placeholder.com/385x300.png" alt="product" className="mb-2 w-100 bg-white p-3" />
-                                        <img src="https://via.placeholder.com/385x300.png" alt="product" className="mb-2 w-100 bg-white p-3" />
-                                        <img src="https://via.placeholder.com/385x300.png" alt="product" className="mb-2 w-100 bg-white p-3" />
-                                        <img src="https://via.placeholder.com/385x300.png" alt="product" className="mb-2 w-100 bg-white p-3" />
-                                    </div>
-                                    <div className="col-lg-5 mb-4 shop-slider">
-                                        <Slider {...hotelsettings}>
-                                            {slideList.map((value , index) => (
-                                            <div key={index} className="pt-lg--10 pb-lg--10 bg-white rounded-3">
-                                                <img src={`assets/images/${value.imageUrl}`} alt="avater" className="rounded-3 img-fluid" />
-                                            </div>
-                                            ))}
-                                        </Slider>
-                                    </div>
-
-                                    <div className="col-lg-6  col-md-12 pad-top-lg-200 pad-bottom-lg-100 pad-top-100 pad-bottom-75 ps-md--5">
-                                        <h4 className="text-danger font-xssss fw-700 ls-2">DNMX</h4>
-                                        <h2 className="fw-700 text-grey-900 display1-size lh-3 porduct-title display2-md-size"> Camisole with Adjustable Straps</h2>
-                                        <div className="star d-block w-100 text-left">
-                                            <img src="assets/images/star.png" alt="star" className="w15 float-left" />
-                                            <img src="assets/images/star.png" alt="star" className="w15 float-left" />
-                                            <img src="assets/images/star.png" alt="star" className="w15 float-left" />
-                                            <img src="assets/images/star.png" alt="star" className="w15 float-left" />
-                                            <img src="assets/images/star-disable.png" alt="star" className="w15 float-left me-2" />
-                                        </div>
-                                        <p className="review-link font-xssss fw-500 text-grey-500 lh-3"> 2 customer review</p>
-                                        <div className="clearfix"></div>
-                                        <p className="font-xsss fw-400 text-grey-500 lh-30 pe-5 mt-3 me-5">ultrices justo eget, sodales orci. Aliquam egestas libero ac turpis pharetra, in vehicula lacus scelerisque. Vestibulum ut sem laoreet, feugiat tellus at, hendrerit arcu.</p>
-
-                                        <h6 className="display2-size fw-700 text-current ls-2 mb-2"><span className="font-xl">$</span>449 <span className="font-xs text-grey-500" style={{textDecoration: `line-through`}}>$699</span></h6>
-                                        <div className="timer bg-white mt-2 mb-0 w350 rounded-3"><div className="time-count"><span className="text-time">03</span> <span className="text-day">Day</span></div> <div className="time-count"><span className="text-time">03</span> <span className="text-day">Hours</span> </div> <div className="time-count"><span className="text-time">55</span> <span className="text-day">Min</span> </div> <div className="time-count"><span className="text-time">48</span> <span className="text-day">Sec</span> </div> </div>
-                                        <div className="clearfix"></div>
-                                        <form action="#" className="form--action mt-4 mb-3">
-                                            <div className="product-action flex-row align-items-center">
-                                                <div className="quantity me-3">
-                                                    <input type="number" className="quantity-input" name="qty" id="qty"  min="1" />
-                                                    <div className="dec qtybutton">-</div>
-                                                    <div className="inc qtybutton">+</div>
+                                <div className="col-lg-12">
+                                    <div className="main-wraper">
+                                        <div className="row">
+                                            <div className="col-lg-7 col-md-7">
+                                                <div className="course-details">
+                                                    <ul className="rating-stars">
+                                                        <li><i className="icofont-star"></i></li>
+                                                        <li><i className="icofont-star"></i></li>
+                                                        <li><i className="icofont-star"></i></li>
+                                                        <li><i className="icofont-star"></i></li>
+                                                        <li><i className="icofont-star"></i></li>
+                                                        <li><span>4.5</span></li>
+                                                    </ul>
+                                                    <h4>{interactivecourses.title}</h4>
+                                                    <span className="course-price">${interactivecourses.price}<del>29.99</del></span>
+                                                    <p>
+                                                        Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
+                                                        condimentum rhoncus, sem quam semper libero, eget dui. Etiam
+                                                        rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
+                                                        quam semper libero.
+                                                    </p>
+                                                    <div className="create-by">
+                                                        <figure><img src={`images/resources/user1.jpg`} alt=""/></figure>
+                                                        <div>
+                                                            <span>Kim Carter</span>
+                                                            <em>Last Update: Aug, 27 2021</em>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#" title="">Follow</a>
+                                                    <ul className="statistic">
+                                                        <li><i className="icofont-eye-alt"></i> 1450</li>
+                                                        <li><i className="icofont-thumbs-up"></i> 200</li>
+                                                        <li><i className="icofont-thumbs-down"></i> 80</li>
+                                                        <li><i className="icofont-share-alt"></i> Share</li>
+                                                    </ul>
                                                 </div>
-                                                
-                                                <a href="/defaulthoteldetails" className="add-to-cart bg-dark text-white fw-700 ps-lg-5 pe-lg-5 text-uppercase font-xssss float-left border-dark border rounded-3 border-size-md d-inline-block mt-0 p-3 text-center ls-3">Add to cart</a>
-                                                <a href="/defaulthoteldetails" className="btn-round-xl alert-dark text-white d-inline-block mt-0 ms-4 float-left"><i className="ti-heart font-sm"></i></a>
-                                            </div>  
-                                        </form>
-                                        <div className="clearfix"></div>
-                                        <ul className="product-feature-list mt-5">
-                                            <li className="w-50 lh-32 font-xsss text-grey-500 fw-500 float-left"><b className="text-grey-900"> Category : </b>Furniture</li>
-                                            <li className="w-50 lh-32 font-xsss text-grey-500 fw-500 float-left">Straight fit</li> 
-                                            <li className="w-50 lh-32 font-xsss text-grey-500 fw-500 float-left"><b className="text-grey-900">SKU : </b> REF. LA-107</li>
-                                            <li className="w-50 lh-32 font-xsss text-grey-500 fw-500 float-left">Dry clean</li>
-                                            <li className="w-50 lh-32 font-xsss text-grey-500 fw-500 float-left"><b className="text-grey-900">Tags : </b>Design, Toys</li>
-                                            <li className="w-50 lh-32 font-xsss text-grey-500 fw-500 float-left">Cutton shirt</li>
-                                        </ul>
+                                            </div>
+                                            <div className="col-lg-5 col-md-5">
+                                                <div className="course-video">
+                                                    <figure>
+                                                        <img src={`assets/images/course-2.jpg`} alt=""/>
+                                                            <a className="play-btn" data-fancybox=""
+                                                               href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title"><i
+                                                                className="icofont-play"></i></a>
+                                                    </figure>
+                                                    <a className="main-btn" href="#" title=""><i
+                                                        className="icofont-play"></i> Start</a>
+                                                    <a className="wish-btn" href="#" title=""><i
+                                                        className="icofont-heart"></i> Add to Wishlist</a>
+                                                    <span>30 days money back gurantee</span>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="desc-course">
+                                                    <h4 className="main-title">Description:</h4>
+                                                    <p>Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
+                                                        condimentum rhoncus, sem quam semper libero, eget dui. Etiam
+                                                        rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
+                                                        quam semper libero.</p>
+                                                    <p>
+                                                        Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
+                                                        condimentum rhoncus, sem quam semper libero, eget dui. Etiam
+                                                        rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
+                                                        quam semper libero.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="desc-course">
+                                                    <h4 className="main-title">Curriculum</h4>
+                                                    <div className="question-collaps">
+                                                            <div className="interactivecourses" id="accordion">
+                                                            </div>
+                                                            <div className="card">
+                                                                <div className="card-header" id="headingOne">
+                                                                    <h5 className="mb-0">
+                                                                        <button className="btn btn-link collapsed"
+                                                                                data-toggle="collapse"
+                                                                                data-target="#collapseOne"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="collapseOne">
+                                                                            1- Basic Html
+                                                                            Introduction <span>03 videos</span>
+                                                                        </button>
+                                                                    </h5>
+                                                                </div>
+
+                                                                <div id="collapseOne" className="collapse"
+                                                                     aria-labelledby="headingOne"
+                                                                     data-parent="#accordion" >
+                                                                    <div className="card-body">
+                                                                        <ul className="video-lecture">
+                                                                            <li>
+                                                                                <i className="icofont-play-alt-1"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
+                                                                                    Intro Lecture</a>
+                                                                                <span>29min</span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i className="icofont-play-alt-1"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
+                                                                                    Basic Lecture</a>
+                                                                                <span>45min</span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i className="icofont-lock"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
+                                                                                    Tags Lecture</a>
+                                                                                <span>20min</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="card">
+                                                                <div className="card-header" id="headingTwo">
+                                                                    <h5 className="mb-0">
+                                                                        <button className="btn btn-link"
+                                                                                data-toggle="collapse"
+                                                                                data-target="#collapseTwo"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="collapseTwo">
+                                                                            Css3 Advanced Lectures
+                                                                            <span>10 videos</span>
+                                                                        </button>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="collapseTwo" className="collapse show"
+                                                                     aria-labelledby="headingTwo"
+                                                                     data-parent="#accordion" >
+                                                                    <div className="card-body">
+                                                                        <ul className="video-lecture">
+                                                                            <li>
+                                                                                <i className="icofont-play-alt-1"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Css3
+                                                                                    Intro Lecture</a>
+                                                                                <span>29min</span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i className="icofont-lock"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Css3
+                                                                                    Basic Lecture</a>
+                                                                                <span>45min</span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i className="icofont-lock"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Css3
+                                                                                    Tags Lecture</a>
+                                                                                <span>20min</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="card">
+                                                                <div className="card-header" id="headingThree">
+                                                                    <h5 className="mb-0">
+                                                                        <button className="btn btn-link collapsed"
+                                                                                data-toggle="collapse"
+                                                                                data-target="#collapseThree"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="collapseThree">
+                                                                            JQuery Advance Lectures
+                                                                            <span>20 videos</span>
+                                                                        </button>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="collapseThree" className="collapse"
+                                                                     aria-labelledby="headingThree"
+                                                                     data-parent="#accordion">
+                                                                    <div className="card-body">
+                                                                        <ul className="video-lecture">
+                                                                            <li>
+                                                                                <i className="icofont-play-alt-1"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
+                                                                                    Intro Lecture</a>
+                                                                                <span>29min</span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i className="icofont-play-alt-1"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
+                                                                                    Basic Lecture</a>
+                                                                                <span>45min</span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i className="icofont-play-alt-1"></i>
+                                                                                <a className="play-btn" data-fancybox=""
+                                                                                   href="https://www.youtube.com/watch?v=nOCXXHGMezU&amp;feature=emb_title">Html
+                                                                                    Tags Lecture</a>
+                                                                                <span>20min</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-5">
+                                                <div className="incldes">
+                                                    <h4 className="main-title">This Course Include:</h4>
+                                                    <ul>
+                                                        <li>
+                                                            <i className="icofont-play"></i>
+                                                            <span>28 Hours Video</span>
+                                                        </li>
+                                                        <li>
+                                                            <i className="icofont-certificate-alt-1"></i>
+                                                            <span>Certificate</span>
+                                                        </li>
+                                                        <li>
+                                                            <i className="icofont-file-alt"></i>
+                                                            <span>12 Article</span>
+                                                        </li>
+                                                        <li>
+                                                            <i className="icofont-video-cam"></i>
+                                                            <span>Watch Offline</span>
+                                                        </li>
+                                                        <li>
+                                                            <i className="icofont-clock-time"></i>
+                                                            <span>Life Time Access</span>
+                                                        </li>
+                                                        <li>
+                                                            <i className="icofont-dollar"></i>
+                                                            <span>Paid</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-7">
+                                                <h4 className="main-title">Feedback</h4>
+                                                <div className="course-ratings row merged-10">
+                                                    <div className="rating-column col-lg-3 col-md-3 col-sm-3">
+                                                        <div className="inner-column">
+                                                            <div className="total-rating">4.2</div>
+                                                            <div className="rating">
+                                                                <span className="icofont-star"></span>
+                                                                <span className="icofont-star"></span>
+                                                                <span className="icofont-star"></span>
+                                                                <span className="icofont-star"></span>
+                                                                <span className="icofont-star"></span>
+                                                            </div>
+                                                            <span>Course Rating</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="graph-column col-lg-6 col-md-6 col-sm-6">
+                                                        <div className="skills">
+                                                            <div className="bar">
+                                                                <div className="bar-outer">
+                                                                    <div className="bar-inner ht"
+                                                                         style={{width: "78%"}}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="bar">
+                                                                <div className="bar-outer">
+                                                                    <div className="bar-inner sk"
+                                                                         style={{width: "45%"}}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="bar">
+                                                                <div className="bar-outer">
+                                                                    <div className="bar-inner ph"
+                                                                         style={{width: "25%"}}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="bar">
+                                                                <div className="bar-outer">
+                                                                    <div className="bar-inner il"
+                                                                         style={{width: "15%"}}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="bar">
+                                                                <div className="bar-outer">
+                                                                    <div className="bar-inner in"
+                                                                         style={{width: "5%"}}></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="stars-column col-lg-3 col-md-3 col-sm-3">
+
+                                                        <div className="rating">
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <i>78%</i>
+                                                        </div>
+
+                                                        <div className="rating">
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <i>60%</i>
+                                                        </div>
+
+                                                        <div className="rating">
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <i>45%</i>
+                                                        </div>
+
+                                                        <div className="rating">
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <i>15%</i>
+                                                        </div>
+
+                                                        <div className="rating">
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <span className="icofont-star"></span>
+                                                            <i>1%</i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-lg-9">
+                                            <div className="main-wraper">
+                                                <div className="comment-area product">
+                                                    <h4 className="comment-title">03 Feedback</h4>
+                                                    <ul className="comments">
+                                                        <li>
+                                                            <div className="comment-box">
+                                                                <div className="commenter-photo">
+                                                                    <img alt="" src={`images/resources/commenter-1.jpg`}/>
+                                                                </div>
+                                                                <div className="commenter-meta">
+                                                                    <div className="comment-titles">
+                                                                        <h6>willimes doe</h6>
+                                                                        <span>12 june 2017</span>
+                                                                        <ins><i className="icofont-star"></i> 4.5</ins>
+                                                                    </div>
+                                                                    <p>
+                                                                        Quis autem velum iure reprehe nderit. Lorem
+                                                                        ipsum dolor sit amet adipiscing egetmassa
+                                                                        pulvinar eu aliquet nibh dapibus.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div className="comment-box">
+                                                                <div className="commenter-photo">
+                                                                    <img alt="" src={`images/resources/commenter-2.jpg`}/>
+                                                                </div>
+                                                                <div className="commenter-meta">
+                                                                    <div className="comment-titles">
+                                                                        <h6>Qlark Jack</h6>
+                                                                        <span>22 july 2017</span>
+                                                                        <ins><i className="icofont-star"></i> 4.5</ins>
+                                                                    </div>
+                                                                    <p>
+                                                                        Quis autem velum iure reprehe nderit. Lorem
+                                                                        ipsum dolor sit amet adipiscing egetmassa
+                                                                        pulvinar eu aliquet nibh dapibus.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div className="comment-box">
+                                                                <div className="commenter-photo">
+                                                                    <img alt="" src={`images/resources/commenter-3.jpg`}/>
+                                                                </div>
+                                                                <div className="commenter-meta">
+                                                                    <div className="comment-titles">
+                                                                        <h6>Olivia Take</h6>
+                                                                        <span>15 jan 2016</span>
+                                                                        <ins><i className="icofont-star"></i> 4.5</ins>
+                                                                    </div>
+                                                                    <p>
+                                                                        Quis autem velum iure reprehe nderit. Lorem
+                                                                        ipsum dolor sit amet adipiscing egetmassa
+                                                                        pulvinar eu aliquet nibh dapibus.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                    <div className="add-comment mt-5">
+                                                        <span>Give Your Reviews</span>
+                                                        <ul className="stars">
+                                                            <li><i className="icofont-star"></i></li>
+                                                            <li><i className="icofont-star"></i></li>
+                                                            <li><i className="icofont-star"></i></li>
+                                                            <li><i className="icofont-star"></i></li>
+                                                            <li><i className="icofont-star"></i></li>
+                                                        </ul>
+                                                        <form method="post" className="c-form">
+                                                            <input type="text" placeholder="Name"/>
+                                                                <input type="text" placeholder="Email"/>
+                                                                    <textarea rows="4"
+                                                                              placeholder="Write Something"></textarea>
+                                                                    <button className="main-btn" type="submit">Add
+                                                                        Review
+                                                                    </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <Popupchat />
-                    <Appfooter /> 
+                    <Appfooter />
             </Fragment>
         );
-    }
 }
 
 export default Singleproduct;

@@ -4,6 +4,7 @@ import {toast} from "react-toastify";
 import {login, reset} from "../features/auth/authSlice";
 import {useNavigate} from "react-router-dom";
 import Spinner from "../components/Spinner";
+import {useToasts} from "react-toast-notifications";
 
 
 
@@ -13,22 +14,26 @@ const Login = ()=>{
         email: '',
         password: '',
     })
+    const { addToast, removeToast } = useToasts();
 
     const { email, password } = formData
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const { user, isLoading, isError, isSuccess, message } = useSelector(
+    const { user,twoFactor, isLoading, isError, isSuccess, message } = useSelector(
         (state) => state.auth
     )
 
     useEffect(() => {
         if (isError) {
-            toast.error(message)
-        }
+            addToast(message, { appearance: 'error' ,autoDismiss: true});
 
-        if (isSuccess || user) {
+        }
+        if(twoFactor){
+            navigate('/otp')
+        }
+        if ( user?.token) {
             navigate('/')
         }
 
