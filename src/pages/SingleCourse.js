@@ -100,7 +100,7 @@ function SingleCourse () {
                                             </ul>
 
                                             <h4>{videocourses.title}</h4>
-                                            <span className="course-price">${videocourses.price}<del>29.99</del></span>
+                                            <span className="course-price">${videocourses.price}<del>{videocourses.price*1.1}</del></span>
                                             <p>
                                                 Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
                                                 condimentum rhoncus, sem quam semper libero, eget dui. Etiam
@@ -110,8 +110,8 @@ function SingleCourse () {
                                             <div className="create-by">
                                                 <figure><img src={`/assets/images/user1.jpg`} alt=""/></figure>
                                                 <div>
-                                                    <span>Kim Carter</span>
-                                                    <em>Last Update: Aug, 27 2021</em>
+                                                    <span>{videocourses.user.name}</span>
+                                                    <em>Last Update: {format(videocourses.createdAt)}</em>
                                                 </div>
                                             </div>
                                             <a href="#" title="">Follow</a>
