@@ -1,4 +1,4 @@
-import React, { Component , Fragment } from "react";
+import React, {Component, Fragment, useEffect} from "react";
 
 import Header from '../components/Header';
 import Leftnav from '../components/Leftnav';
@@ -34,7 +34,8 @@ const Home= () =>{
                         <div className="middle-sidebar-left">
                             <div className="row feed-body">
                                 <div className="col-xl-8 col-xxl-9 col-lg-8">
-                                    <h1>{user && user.name}</h1>
+                                    <h1>{user && "connected user: "+user.name}</h1>
+
                                     <Storyslider />
                                     <Createpost />
                                     <Postview id="32" postvideo="" postimage="post.png" avater="user.png" user="Surfiya Zakir" time="22 min ago" des="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non nisi. Phasellus faucibus mollis pharetra. Proin blandit ac massa sed rhoncus." />
